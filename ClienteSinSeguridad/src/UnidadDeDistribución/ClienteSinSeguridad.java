@@ -141,16 +141,15 @@ public class ClienteSinSeguridad
 			throw new Exception("Formato de posición incorrecto.");	
 		}
 		
-		//ACT1		
-		byte[] posBytes = pos.getBytes();
-		String posEnviar = "ACT1:"+toHexString(posBytes);
+		//ACT1
+		String posEnviar = "ACT1";
 		System.out.println(posEnviar);
 		out.println(posEnviar);
 		
 		//ACT2		
-		String posHashEnviar = "ACT2:"+toHexString(posBytes);
-		System.out.println(posHashEnviar);
-		out.println(posHashEnviar);
+		posEnviar = "ACT2";
+		System.out.println(posEnviar);
+		out.println(posEnviar);
 		
 		//Recibir confirmación
 		String rta = in.readLine();		

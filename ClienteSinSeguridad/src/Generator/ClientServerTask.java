@@ -3,14 +3,14 @@ package Generator;
 import java.io.PrintStream;
 
 import Generator.Task;
-import UnidadDeDistribución.ClienteSeguro;
+import UnidadDeDistribución.ClienteSinSeguridad;
 
 public class ClientServerTask extends Task {
     @Override
     public void execute() {
     	try {
 			@SuppressWarnings("unused")
-			ClienteSeguro cliente = new ClienteSeguro();
+			ClienteSinSeguridad cliente = new ClienteSinSeguridad();
 			
 		} catch (Exception e) {
 			System.out.println("For if the flies");

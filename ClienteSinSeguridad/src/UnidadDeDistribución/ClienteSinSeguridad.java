@@ -123,9 +123,26 @@ public class ClienteSinSeguridad
 	
 	private void reporteAct() throws Exception
 	{
+		String pos = "41 24.2028, 2 10.4418";
+		
+		//Se controla que se ingrese un formato de posición correcto (AA BB, CC DD)
+		if(pos.split(",").length == 2)
+		{			
+			String pos1 = pos.split(",")[0];
+			String pos2 = pos.split(",")[1];
+						
+			if(pos1.trim().split(" ").length != 2 || pos2.trim().split(" ").length != 2)
+			{
+				throw new Exception("Formato de posición incorrecto.");		
+			}
+		}
+		else
+		{
+			throw new Exception("Formato de posición incorrecto.");	
+		}
+		
 		//ACT1
-		BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));		
-		String pos = stdIn.readLine();
+		
 		byte[] posBytes = pos.getBytes();
 		String posEnviar = "ACT1:"+toHexString(posBytes);
 		System.out.println(posEnviar);
@@ -169,11 +186,5 @@ public class ClienteSinSeguridad
 	public static byte[] toByteArray(String s) 
 	{
 	    return DatatypeConverter.parseHexBinary(s);
-	}	
-	
-	//------ Main
-	public static void main(String[] args) 
-	{
-		ClienteSinSeguridad ci = new ClienteSinSeguridad();
-	}
+	}		
 }

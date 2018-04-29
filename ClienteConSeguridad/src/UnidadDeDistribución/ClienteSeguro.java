@@ -133,12 +133,7 @@ public class ClienteSeguro
 	
 	private void reporteAct() throws Exception
 	{	
-		System.out.println("Ingrese la posición:");
-		
-		//En este instante debe ingresarse la posición nueva (en formato correcto) EN LA CONSOLA para actualizarla.
-		
-		BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));		
-		String pos = stdIn.readLine();
+		String pos = "41 24.2028, 2 10.4418";
 		
 		//Se controla que se ingrese un formato de posición correcto (AA BB, CC DD)
 		if(pos.split(",").length == 2)
@@ -203,11 +198,6 @@ public class ClienteSeguro
 	public static byte[] toByteArray(String s) 
 	{
 	    return DatatypeConverter.parseHexBinary(s);
-	}	
-	
-	//------ Main
-	public static void main(String[] args) 
-	{
-		ClienteSeguro ci = new ClienteSeguro();
 	}
+
 }

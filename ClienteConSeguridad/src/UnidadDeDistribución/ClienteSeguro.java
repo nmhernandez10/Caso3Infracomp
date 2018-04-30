@@ -50,16 +50,19 @@ public class ClienteSeguro
 	private CifradorSimetricoAES cifradorSim;
 	private CalculadorDigestHmacMD5 cmd;
 	
+	//Estadísticas
+	
 	private long tiempoObtenciónLlaveSimétrica;
 	private long tiempoActualización;
 
-	//Estadísticas
+	private int numIteracion;
 	
 	
-	public ClienteSeguro()
+	public ClienteSeguro(int pNumIteracion)
 	{
 		try
 		{
+			numIteracion = pNumIteracion;
 			tiempoObtenciónLlaveSimétrica = System.nanoTime();
 			s = new Socket(DIR, PUERTO);
 			out = new PrintWriter(s.getOutputStream(), true);
@@ -108,6 +111,8 @@ public class ClienteSeguro
 		//Etapa 4 Reporte y manejo de actualización
 		
 		reporteAct();	
+		
+		//Reporte de tiempos en archivos (Caso 3)
 		
 		registrarTiempos();
 		
@@ -213,7 +218,7 @@ public class ClienteSeguro
 	{
 		try
 		{
-			File tiempos = new File("./data/" + "Tiempos_"+ Generator.NUMBER_OF_TASKS + "_" + Generator.GAP_BETWEEN_TASKS + "_" + Generator.NUM_THREADS);
+			File tiempos = new File("./data/" + "Tiempos_"+ Generator.NUMBER_OF_TASKS + "_" + Generator.GAP_BETWEEN_TASKS + "_" + Generator.NUM_THREADS+"_"+numIteracion);
 			PrintWriter escritor = new PrintWriter(new FileWriter(tiempos, true));
 			escritor.println("TiempoObtenciónLlaveSimétrica:"+tiempoObtenciónLlaveSimétrica);
 			escritor.println("TiempoActualización:"+tiempoActualización);

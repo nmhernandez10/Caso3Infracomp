@@ -1,22 +1,44 @@
 package Generator;
 
+import java.io.File;
+
+import java.io.FileWriter;
 import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.Serializable;
 
 import Generator.Task;
 import UnidadDeDistribución.ClienteSinSeguridad;
 
-public class ClientServerTask extends Task {
-    @Override
+public class ClientServerTask extends Task {  
+    
+	private int numIteracion;
+	
+    public int getNumIteracion() {
+		return numIteracion;
+	}
+
+
+
+	public void setNumIteracion(int numIteracion) {
+		this.numIteracion = numIteracion;
+	}
+	
+	@Override
     public void execute() {
-    	try {
+    	try 
+    	{    		
 			@SuppressWarnings("unused")
-			ClienteSinSeguridad cliente = new ClienteSinSeguridad();
-			
-		} catch (Exception e) {
-			System.out.println("For if the flies");
+			ClienteSinSeguridad cliente = new ClienteSinSeguridad(numIteracion);			
+		} 
+    	catch (Exception e) 
+    	{
+    		System.out.println(e.getMessage());
 		}
     }
-
+    
+    
+    
     @Override
     public void fail() {
         System.out.println("FAIL_TEST");

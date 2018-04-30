@@ -1,6 +1,8 @@
 package UnidadDeDistribución;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -16,6 +18,8 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
 import org.bouncycastle.util.encoders.Base64;
+
+import Generator.Generator;
 
 
 public class ClienteSinSeguridad 
@@ -40,11 +44,18 @@ public class ClienteSinSeguridad
 	private CifradorAsimetricoRSA cifradorAsim;
 	private ManejadorCertificado mc;
 
+	//Estadísticas
+
+	private long tiempoActualización;
+
 	
-	public ClienteSinSeguridad()
+	private int numIteracion;
+	
+	public ClienteSinSeguridad(int pNumIteracion)
 	{
 		try
 		{
+			numIteracion = pNumIteracion;
 			cifradorAsim = new CifradorAsimetricoRSA();
 			keyAsin = cifradorAsim.darLlave();
 			
@@ -81,6 +92,10 @@ public class ClienteSinSeguridad
 		//Etapa 4 Reporte y manejo de actualización
 		
 		reporteAct();	
+		
+		//Reporte de tiempos en archivos (Caso 3)
+		
+		registrarTiempos();
 		
 		System.out.println("¡Se termino!");
 	}
@@ -142,6 +157,9 @@ public class ClienteSinSeguridad
 		}
 		
 		//ACT1
+		
+		tiempoActualización = System.nanoTime();
+		
 		String posEnviar = "ACT1";
 		System.out.println(posEnviar);
 		out.println(posEnviar);
@@ -161,7 +179,24 @@ public class ClienteSinSeguridad
 		if (!rta.equals("OK"))
 		{
 	        throw new Exception("Error en actualización y reporte.");
-	    }		
+	    }	
+		
+		tiempoActualización = System.nanoTime() - tiempoActualización;		
+	}
+	
+	public void registrarTiempos()
+	{
+		try
+		{
+			File tiempos = new File("./data/" + "Tiempos_"+ Generator.NUMBER_OF_TASKS + "_" + Generator.GAP_BETWEEN_TASKS + "_" + Generator.NUM_THREADS+"_"+numIteracion);
+			PrintWriter escritor = new PrintWriter(new FileWriter(tiempos, true));
+			escritor.println("TiempoActualización:"+tiempoActualización);
+			escritor.close();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 		
 	//------ Metodos Auxiliares

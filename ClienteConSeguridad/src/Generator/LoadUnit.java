@@ -28,7 +28,7 @@ implements Runnable {
             this.waitUntil();
         }
         this.command.execute();
-        System.out.println("[LoadUnit " + this.id + "] [Executed at: " + new Date(System.currentTimeMillis()) + "]");
+        System.out.println("[LoadUnit " + this.id + "] [Executed at: " + new Date(System.currentTimeMillis()) + "]");       
     }
 
     public void waitUntil() {

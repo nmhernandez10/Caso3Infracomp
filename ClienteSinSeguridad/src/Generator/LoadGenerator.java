@@ -44,7 +44,7 @@ public class LoadGenerator {
                 sync = true;
             }
             LoadUnit unidad = new LoadUnit(this.unit, i, this.timeGap * (long)i, sync);
-            this.executors.execute(unidad);
+            this.executors.execute(unidad);            
             try {
                 Thread.sleep(this.timeGap);
             }
@@ -53,6 +53,7 @@ public class LoadGenerator {
             }
             ++i;
         }
+        
     }
 
     public static int getSYNC_GAP() {

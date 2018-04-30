@@ -5,6 +5,8 @@
 package UnidadDeDistribución;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -20,6 +22,8 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
 import org.bouncycastle.util.encoders.Base64;
+
+import Generator.Generator;
 
 
 public class ClienteSeguro 
@@ -44,29 +48,47 @@ public class ClienteSeguro
 	private KeyPair keyAsin;
 	private CifradorAsimetricoRSA cifradorAsim;
 	private CifradorSimetricoAES cifradorSim;
-	private CalculadorDigestHmacMD5 cmd;	
+	private CalculadorDigestHmacMD5 cmd;
+	
+	private long tiempoObtenciónLlaveSimétrica;
+	private long tiempoActualización;
+
+	//Estadísticas
+	
 	
 	public ClienteSeguro()
 	{
 		try
 		{
+			tiempoObtenciónLlaveSimétrica = System.nanoTime();
+			s = new Socket(DIR, PUERTO);
+			out = new PrintWriter(s.getOutputStream(), true);
+			in = new BufferedReader(new InputStreamReader(s.getInputStream()));
 			cifradorAsim = new CifradorAsimetricoRSA();
 			keyAsin = cifradorAsim.darLlave();
-
+			
 			conectar();
 			conversar();
 		} 
 		catch (Exception e)
-		{
+		{			
 			e.printStackTrace();
 		}
 	}
 
 	public void conectar() throws Exception
 	{
+		try
+		{
 			s = new Socket(DIR, PUERTO);
 			out = new PrintWriter(s.getOutputStream(), true);
 			in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+			
+		}
+		catch(Exception e)
+		{
+			
+		}			
 	}
 
 	public void conversar() throws Exception
@@ -86,6 +108,8 @@ public class ClienteSeguro
 		//Etapa 4 Reporte y manejo de actualización
 		
 		reporteAct();	
+		
+		registrarTiempos();
 		
 		System.out.println("¡Se termino!");
 	}
@@ -128,6 +152,9 @@ public class ClienteSeguro
 		byte[] bytesCifrados = toByteArray(rta);
 		byte[] bytes = cifradorAsim.descifrar(bytesCifrados);
 		llaveSesion = new SecretKeySpec(bytes, "AES");
+		
+		tiempoObtenciónLlaveSimétrica = System.nanoTime() - tiempoObtenciónLlaveSimétrica;
+		
 		cmd = new CalculadorDigestHmacMD5();
 	}
 	
@@ -153,6 +180,8 @@ public class ClienteSeguro
 		
 		//ACT1
 		
+		tiempoActualización = System.nanoTime();
+		
 		byte[] posCifradaSim = CifradorSimetricoAES.cifrar(pos, llaveSesion);
 		String posEnviar = "ACT1:"+toHexString(posCifradaSim);
 		System.out.println(posEnviar);
@@ -175,7 +204,25 @@ public class ClienteSeguro
 		if (!rta.equals("OK"))
 		{
 	        throw new Exception("Error en actualización y reporte.");
-	    }		
+	    }	
+		
+		tiempoActualización = System.nanoTime() - tiempoActualización;		
+	}
+	
+	public void registrarTiempos()
+	{
+		try
+		{
+			File tiempos = new File("./data/" + "Tiempos_"+ Generator.NUMBER_OF_TASKS + "_" + Generator.GAP_BETWEEN_TASKS + "_" + Generator.NUM_THREADS);
+			PrintWriter escritor = new PrintWriter(new FileWriter(tiempos, true));
+			escritor.println("TiempoObtenciónLlaveSimétrica:"+tiempoObtenciónLlaveSimétrica);
+			escritor.println("TiempoActualización:"+tiempoActualización);
+			escritor.close();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 		
 	//------ Metodos Auxiliares

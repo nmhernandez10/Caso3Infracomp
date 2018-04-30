@@ -7,10 +7,11 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class Servidor {
 	private static final int TIME_OUT = 10000;
-	public static final int N_THREADS = 2;
+	public static final int N_THREADS = 1;
 	private static ServerSocket elSocket;
 	private static Servidor elServidor;
 
@@ -42,6 +43,17 @@ public class Servidor {
 				num++;
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		try
+		{
+			if(executor.awaitTermination(TIME_OUT, TimeUnit.SECONDS))
+			{
+				return;
+			}
+		}
+		catch(Exception e)
+		{
 			e.printStackTrace();
 		}
 	}

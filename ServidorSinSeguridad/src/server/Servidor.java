@@ -10,7 +10,7 @@ import java.util.concurrent.Executors;
 
 public class Servidor {
 	private static final int TIME_OUT = 10000;
-	public static final int N_THREADS = 2;
+	public static final int N_THREADS = 8;
 	private static ServerSocket elSocket;
 	private static Servidor elServidor;
 

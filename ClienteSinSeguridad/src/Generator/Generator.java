@@ -15,9 +15,9 @@ import Generator.ClientServerTask;
 
 public class Generator {
 	private LoadGenerator generator;
-	public static final int NUMBER_OF_TASKS = 400; // 400-200-80
-	public static final int GAP_BETWEEN_TASKS = 20; // 20-40-100 (amarrado a tasks)
-	public static final int NUM_THREADS = 1; // 1-2-8
+	public static final int NUMBER_OF_TASKS = 80; // 400-200-80
+	public static final int GAP_BETWEEN_TASKS = 100; // 20-40-100 (amarrado a tasks)
+	public static final int NUM_THREADS = 8; // 1-2-8
 	public static final int NUM_ITERACIONES = 10;
 	
 	public Generator(int numIteracion)

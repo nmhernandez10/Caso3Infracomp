@@ -31,6 +31,7 @@ public class ClienteSeguro
 
 	private static final int PUERTO = 8081;
 	private static final String DIR = "localhost";
+//	private static final String DIR = "157.253.220.46";
 	private static final String algoritmoSimetrico = "AES";
 	private static final String algoritmoAsimetrico = "RSA";
 	private static final String algoritmoDigest = "HMACMD5";

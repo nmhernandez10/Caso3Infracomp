@@ -17,8 +17,8 @@ public class Generator {
 	private LoadGenerator generator;
 	public static final int NUMBER_OF_TASKS = 400; // 400-200-80
 	public static final int GAP_BETWEEN_TASKS = 20; // 20-40-100 (amarrado a tasks)
-	public static final int NUM_THREADS = 1; // 1-2-8
-	public static final int NUM_ITERACIONES = 10;
+	public static final int NUM_THREADS = 8; // 1-2-8
+	public static final int NUM_ITERACIONES = 2;
 	
 	public Generator(int numIteracion)
 	{
@@ -37,9 +37,9 @@ public class Generator {
 		
 		for (int i = 0; i < NUM_ITERACIONES; i++) 
 		{
-			System.out.println("============================================== ITERACIÓN "+(i+1)+"===========================================================");
+			System.out.println("============================================== ITERACIÓN "+(i+9)+"===========================================================");
 			@SuppressWarnings("unused")
-			Generator generator = new Generator(i+1);			
+			Generator generator = new Generator(i+9);			
 		}		
 	}
 }
